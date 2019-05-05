@@ -3,27 +3,86 @@
   <head>
     <meta charset="utf-8" />
     <title>FocusByArrow</title>
+    <style>
+      html {
+        font-family: sans-serif;
+        margin: 0 auto;
+        max-width: 70ch;
+      }
+
+      .code-sample {
+        white-space: pre-line;
+      }
+
+      .code-sample::first-line {
+        line-height: 0;
+      }
+
+      .focusables {
+        border: 1px solid rgba(127, 127, 127, 0.5);
+        border-spacing: 1em;
+      }
+
+      .focusables > tbody > tr > td {
+        background: rgba(127, 127, 127, 0.05);
+        padding: 1ch;
+      }
+    </style>
   </head>
+
   <body>
+    <h1>FocusByArrow</h1>
+    <p>Move focus from one element to another based on where they sit on the screen.</p>
+    <p>This is generally useful for lists of links and buttons in menus. The default arrow key action is prevented for non-text inputs.</p>
+    <p>
+      Usage:
+      <pre class="code-sample">
+        <code>
+          // Start listening for arrow key presses within an element:
+          var fba = new FocusByArrow('.some-container');
+
+          // Stop listening:
+          fba.stopListening();
+
+          // Re-start listening:
+          fba.startListening();
+        </code>
+      </pre>
+    </p>
+
     <table class="focusables">
       <tbody>
         <tr>
           <td><a href="#"><span>Link</span></a></td>
-          <td><button id="button" type="button">Button</button></td>
+          <td><button id="button" type="button" autofocus>Button</button></td>
           <td><select><option>Select</option></select></td>
         </tr>
         <tr>
-          <td><input type="text" /></td>
-          <td><label><input type="radio" /> Radio</label></td>
-          <td><label><input type="checkbox" /> Checkbox</label></td>
+          <td>
+            <input type="text" placeholder="Text input" /><br />
+            <input type="text" value="Read-only text input" readonly />
+          </td>
+          <td>
+            <label><input type="radio" name="radio" /> Radio 1</label><br />
+            <label><input type="radio" name="radio" /> Radio 2</label>
+          </td>
+          <td>
+            <label><input type="checkbox" /> Checkbox 1</label><br />
+            <label><input type="checkbox" /> Checkbox 2</label>
+          </td>
         </tr>
         <tr>
-          <td><textarea readonly>Text area</textarea></td>
-          <td><img src="https://placehold.it/100x30.png" tabindex="0" /></td>
-          <td><label for="button"><small>(Label for the button</small>)</label></td>
+          <td>
+            <textarea>Text area</textarea>
+          </td>
+          <td><img src="https://placehold.it/100x40.png?text=tabindex" tabindex="0" /></td>
+          <td><label for="button"><small>(Disconnected label for the button above</small>)</label></td>
         </tr>
       </tbody>
     </table>
+
+    <p>Also available <a href="https://github.com/brian-c/react-focus-by-arrow">as a React component.</a></p>
+
     <script src="./index.js"></script>
     <script>
       window.fba = new FocusByArrow(document.getElementsByClassName('focusables')[0]);

@@ -55,13 +55,13 @@
 
       var canInputText;
       try {
-        canInputText = document.activeElement.selectionStart !== undefined;
+        canInputText = document.activeElement.selectionStart !== null && document.activeElement.selectionStart !== undefined;
       } catch (error) {
         // Chrome throws when accessing invalid `selectionStart`s. No worries.
         canInputText = false;
       }
 
-      if (canInputText) {
+      if (canInputText && !document.activeElement.readOnly) {
         return;
       }
 
@@ -73,6 +73,8 @@
 
       var nextInLine = this.getAdjacent(document.activeElement, direction);
       if (nextInLine !== null) {
+        // Normally, radio buttons change on arrow-key-press and select menus open.
+        event.preventDefault();
         nextInLine.focus();
       }
     },
@@ -83,8 +85,8 @@
 
     getAdjacent: function(target, direction) {
       var targetRect = target.getBoundingClientRect();
-      var x = pageXOffset + (targetRect.left + (target.offsetWidth / 2));
-      var y = pageYOffset + (targetRect.top + (target.offsetHeight / 2));
+      var x = targetRect.left + target.offsetWidth / 2;
+      var y = targetRect.top + target.offsetHeight / 2;
 
       var parentLabel = target.parentNode;
       while (parentLabel !== null && parentLabel.nodeName !== 'LABEL') {
